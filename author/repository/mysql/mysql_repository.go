@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/bxcodec/go-clean-arch/domain"
+	"godm/domain"
 )
 
 type mysqlAuthorRepo struct {
