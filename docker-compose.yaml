@@ -1,10 +1,10 @@
-version: "2.3"
+version: "3.5"
 services:
   web:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: article_management_api
+    container_name: godm_article_management_api
     ports:
       - 9090:9090
     depends_on:
@@ -15,7 +15,7 @@ services:
 
   mysql:
     image: mysql:5.7 
-    container_name: go_clean_arch_mysql
+    container_name: godm_mysql
     command: mysqld --user=root
     volumes:
       - ./article.sql:/docker-entrypoint-initdb.d/init.sql
@@ -30,3 +30,34 @@ services:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 5s
       retries: 10
+
+  postgres:
+    container_name: godm_postgres_container
+    image: postgres
+    environment:
+      - POSTGRES_USER=godm
+      - POSTGRES_PASSWORD=transybao93
+      - POSTGRES_DB=godm
+      - PGDATA=/data/postgres
+    volumes:
+       - ./postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+  
+  pgadmin:
+    container_name: godm_pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=transybao93@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=transybao93
+      - PGADMIN_CONFIG_SERVER_MODE=False
+    volumes:
+       - ./pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    restart: unless-stopped
+
+volumes:
+  postgres:
+  pgadmin:
