@@ -1,3 +1,0 @@
-package inputsources
-
-func test() {}
